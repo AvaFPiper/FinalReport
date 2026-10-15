@@ -1,0 +1,243 @@
+
+\chapter{Theory}
+
+\section{The hydrogenic Schrödinger equation}
+
+
+
+\begin{equation}
+    \hat H\psi=E\psi
+    \label{eq:schrodinger}
+\end{equation}
+
+
+
+\section{Gaussian basis representation}
+
+\subsection{Normalisation of Gaussian functions}
+
+
+
+\begin{equation}
+    \phi_i(r)=
+    \left(\frac{2\lambda_i}{\pi}\right)^{3/4}
+    e^{-\lambda_i r^2}
+    \label{eq:normalised_gaussian}
+\end{equation}
+
+
+
+\subsection{Linear combination of Gaussians}
+
+
+
+\begin{equation}
+    \psi_{\mathrm G}(r)=
+    \sum_{i=1}^{N}c_i\phi_i(r)
+    \label{eq:gaussian_expansion}
+\end{equation}
+
+
+\subsection{Even-tempered exponents}
+
+
+\begin{equation}
+    \lambda_i=\alpha\beta^{i-1},
+    \qquad i=1,\ldots,N
+    \label{eq:even_tempered}
+\end{equation}
+
+
+\section{Variational method}
+
+\subsection{Energy expectation value}
+
+
+\begin{equation}
+    E[\psi]=
+    \frac{\langle\psi|\hat H|\psi\rangle}
+    {\langle\psi|\psi\rangle}
+    \label{eq:energy_functional}
+\end{equation}
+
+\begin{equation}
+    E_{\mathrm G}\geq E_{\mathrm{exact}}
+    \label{eq:variational_bound}
+\end{equation}
+
+
+\subsection{Generalised eigenvalue problem}
+
+
+\begin{equation}
+    H\mathbf c=ES\mathbf c
+    \label{eq:generalised_eigenproblem}
+\end{equation}
+
+\section{Hamiltonian and overlap matrices}
+
+\subsection{Overlap integrals}
+
+\begin{equation}
+    S_{ij}=
+    \langle\phi_i|\phi_j\rangle
+    \label{eq:overlap_definition}
+\end{equation}
+
+Writing
+
+\begin{equation}
+    p=\lambda_i+\lambda_j,
+    \qquad
+    A_i=
+    \left(\frac{2\lambda_i}{\pi}\right)^{3/4}
+\end{equation}
+
+gives
+
+\begin{equation}
+    S_{ij}=
+    A_iA_j\left(\frac{\pi}{p}\right)^{3/2}
+    \label{eq:overlap_matrix}
+\end{equation}
+
+
+\subsection{Kinetic-energy integrals}
+
+\begin{equation}
+    T_{ij}=
+    \left\langle
+    \phi_i\left|
+    -\frac{1}{2}\nabla^2
+    \right|\phi_j
+    \right\rangle
+\end{equation}
+
+\begin{equation}
+    T_{ij}=
+    S_{ij}\frac{3\lambda_i\lambda_j}{p}
+    \label{eq:kinetic_matrix}
+\end{equation}
+
+
+\subsection{Potential-energy integrals}
+
+\begin{equation}
+    V_{ij}=
+    \left\langle
+    \phi_i\left|-\frac{Z}{r}\right|
+    \phi_j\right\rangle
+\end{equation}
+
+\begin{equation}
+    V_{ij}=
+    -ZA_iA_j\frac{2\pi}{p}
+    \label{eq:potential_matrix}
+\end{equation}
+
+
+\subsection{Hamiltonian matrix}
+
+\begin{equation}
+    H_{ij}=T_{ij}+V_{ij}
+    \label{eq:hamiltonian_matrix}
+\end{equation}
+
+
+
+\section{Measures of accuracy}
+
+\subsection{Ground-state energy error}
+
+\begin{equation}
+    \epsilon_E=
+    \frac{|E_{\mathrm G}-E_{\mathrm{exact}}|}
+    {|E_{\mathrm{exact}}|}
+    \label{eq:relative_energy_error}
+\end{equation}
+
+
+\subsection{Wavefunction and radial probability}
+
+\begin{equation}
+    P(r)=4\pi r^2|\psi(r)|^2
+    \label{eq:radial_probability}
+\end{equation}
+
+\begin{equation}
+    \int_0^\infty P(r)\,\mathrm dr=1
+\end{equation}
+
+
+\subsection{Mean electron radius}
+
+\begin{equation}
+    \langle r\rangle=
+    \int_0^\infty rP(r)\,\mathrm dr
+    \label{eq:mean_radius}
+\end{equation}
+
+For the exact ground state,
+
+\begin{equation}
+    \langle r\rangle_{\mathrm{exact}}
+    =\frac{3}{2Z}
+    \label{eq:exact_mean_radius}
+\end{equation}
+
+
+\subsection{Wavefunction stuff}
+
+\begin{equation}
+    F=
+    \left|
+    \langle\psi_{\mathrm G}|
+    \psi_{\mathrm{exact}}\rangle
+    \right|^2
+    \label{eq:fidelity}
+\end{equation}
+
+
+\section{Numerical conditioning}
+
+\begin{equation}
+    \kappa_2(S)=
+    \frac{s_{\max}}{s_{\min}}
+    \label{eq:condition_number}
+\end{equation}
+
+
+\section{Electron--nucleus cusp}
+
+\begin{equation}
+    \psi'_{1s}(0)=-Z\psi_{1s}(0)
+\end{equation}
+
+\begin{equation}
+    \psi'_{\mathrm G}(0)=0
+\end{equation}
+
+
+
+\section{Hydrogenic nuclear-charge scaling}
+
+\begin{equation}
+    \rho=Zr
+    \label{eq:scaled_coordinate}
+\end{equation}
+
+\begin{equation}
+    \psi_Z(r)=Z^{3/2}\psi_1(Zr)
+    \label{eq:wavefunction_scaling}
+\end{equation}
+
+\begin{equation}
+    \lambda_i(Z)=Z^2\lambda_i(1)
+    \label{eq:exponent_scaling}
+\end{equation}
+
+\begin{equation}
+    E_{\mathrm G}(Z)=Z^2E_{\mathrm G}(1)
+    \label{eq:gaussian_energy_scaling}
+\end{equation}
+

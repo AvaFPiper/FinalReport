@@ -1,155 +1,286 @@
-\chapter{Formatting options}\label{ch:introduction}
 
-The best way to view this document is in a split-view format, with the \texttt{.tex} file open and the corresponding portion of the \texttt{.pdf} output also visible.
+\chapter{Introduction}
 
-\section{Equations and tables}\label{sec:equationexamples}
-
-You can write an equation without a label by using an asterisk:
-\begin{equation*}
-f(x) = (x+a)(x+b).
-\end{equation*}
-Alternatively, you can number and label your mathematical expressions:
-\begin{equation}\label{eq:Lagrangian_EM}
-\mathcal{L}_{\text{EM}} 
-  = \frac{1}{2} \biggl( \epsilon_{0} \left| \vect{E} \right|^{2} + \frac{1}{\mu_{0}} \left| \vect{B} \right|^{2} \biggr)
-   - \phi \varrho_{\text{free}} + \vect{A} \cdot \vect{J}_{\text{free}}
-   + \vect{E} \cdot \vect{P} + \vect{B} \cdot \vect{M}.
-% = \mathcal{L}_{\text{field}} + \mathcal{L}_{\text{int}}
-% = - \frac{1}{4 \mu_{0}} F^{\alpha \beta} F_{\alpha \beta} - A_{\alpha} J^{\alpha}.
-\end{equation}
-This way, we can later reference something we wrote earlier, like the electromagnetic Lagrangian density in non-relativistic vector notation shown in Equation (\ref{eq:Lagrangian_EM}).\\
-
-The equation environment allows you to construct a number of objects, such as arrays and algined sets of equations. For instance, we might want to write a general matrix:
-\begin{equation}
-\vect{c} = 
-  \left(\begin{array}{c c c c c}
-    c_{11} & c_{12} & c_{13} & \ldots & c_{1n} \\
-    c_{21} & c_{22} & c_{23} & \ldots & c_{2n} \\
-    c_{31} & c_{32} & c_{33} & \ldots & c_{3n} \\
-    \vdots & \vdots & \vdots & \ddots & \vdots \\
-    c_{m1} & c_{m2} & c_{m3} & \ldots & c_{mn} \\
-  \end{array}\right).
-\end{equation}
-We might alternatively want to write a set of simultaneous equations. If future descriptions require for all of them to have unique labels, try using the `subequations' environment as well as the `eqnarray' environment.
-\begin{subequations}\label{eq:simulALL}
-\begin{eqnarray}
- 3x + 5y +  z &=& 5\\ \label{eq:simulB}
- 7x - 2y + 4z &=& 3\\
--6x + 3y + 2z &=& 1.
-\end{eqnarray}
-\end{subequations}
-This will allow you to talk about the set of simultaneous equations as a whole by referring the reader to Equation (\ref{eq:simulALL}), or else to a specific statement like Equation (\ref{eq:simulB}).\\
-
-Sometimes you'll want to derive a result, which in its clearest form requires more than one line of algebra. There are a few ways to accomplish this, and the best choice will depend on the task at hand and your personal taste. You can instruct the compiler \textit{not} to give a label to one or more of the lines as you go.
-\begin{eqnarray}\notag
-\lefteqn{R_{x} (\varepsilon) R_{y} (\varepsilon) - R_{y} (\varepsilon) R_{x} (\varepsilon)} \\ \notag
-& = &  \left( 1 - \frac{i J_{x} \varepsilon}{\hbar} - \frac{J_{x}^{2} \varepsilon^{2}}{2 \hbar^{2}} \right) 
- \left( 1 - \frac{i J_{y} \varepsilon}{\hbar} - \frac{J_{y}^{2} \varepsilon^{2}}{2 \hbar^{2}} \right) - 
- \left( 1 - \frac{i J_{y} \varepsilon}{\hbar} - \frac{J_{y}^{2} \varepsilon^{2}}{2 \hbar^{2}} \right)
- \left( 1 - \frac{i J_{x} \varepsilon}{\hbar} - \frac{J_{x}^{2} \varepsilon^{2}}{2 \hbar^{2}} \right) \\
-& = &  \left( 1 - \frac{i J_{z} \varepsilon^{2}}{\hbar} \right) - 1 + \mathcal{O} (\varepsilon^{3}). 
-\end{eqnarray}
-
-A table of data is sometimes necessary, for which there is a dedicated environment. An example of this is given in Table (\ref{tab:measuredconstants}) -- note that the counter for tables is separate from the counter for equations. If this isn't to your liking, you can change the enumeration style of one or both. (Google has plenty of suggestions).
-
-\begin{table}[h!]
-\begin{center}
-\begin{tabular}{ l l l c l}\hline
-\textbf{description}  & \textbf{} & \textbf{value} \\ \hline
-electronic charge & $e$ & $1.6021766 \times 10^{-19} \coulomb$ \\
-proton mass            & $m_{p}$ & $1.6726218 \times 10^{-27} \kilo\gram$ &  
- or & $938.27203 \mega\electronvolt\per c^{2}$ \\
-electron mass          & $m_{e}$ & $9.1093822 \times 10^{-31} \kilo\gram$ & or & $510.99891 \kilo\electronvolt\per c^{2}$ \\
-permittivity of vacuum & $\epsilon_{0}$ & $8.8541878 \times 10^{-12} \farad\per\meter $ \\
-permeability of vacuum & $\mu_{0}$         & $1.2566371 \times 10^{-6} \; \henry\per\meter$ & 
- or & $4 \pi \times 10^{-7} \henry\per\meter $ \\
-speed of light in vacuum & $c$               & $2.9979246 \times 10^{+8} \; \meter\per\second $ \\ 
-electrostatic constant   & $k_{e}$ & $8.9875518 \times 10^{+9} \; \meter\per\farad$ & 
- or & $1/4 \pi \epsilon_{0}$ \\
-Planck constant        & $h$ & $6.6260696 \times 10^{-34} \; \joule\cdot\second$ & 
- or & $4.1356675 \times 10^{-15} \electronvolt\cdot\second$ \\
-reduced Planck constant        & $\hbar$ & $1.0545717 \times 10^{-34} \; \joule\cdot\second$ & 
- or & $6.5821193 \times 10^{-16} \electronvolt\cdot\second$ \\
-\hline
-\end{tabular}
-\end{center}
-\caption{A table of measured constants.}
-\label{tab:measuredconstants}
-\end{table}
-
-\section{Pictures and figures}\label{sec:figures}
-Try to stick to a few data formats if possible. Vector and pdf data types are ideal, because they minimise the overall size of the document and you can zoom/print to any quality without pixelisation.\\
-
-You can write a program that returns data or a visual representation of it (graph, coloured array, surface plot etc.), and in the latter case, you can take the resulting image and copy to your `figures' folder (this keeps the internal address conventions neat and tidy) and link the document directly to your report, like so:\\
-
-\begin{figure}[h!]
-\begin{center}
-\includegraphics[width=0.40\linewidth]{figures/random_matrix.pdf}
-\end{center}
-\caption{A random square matrix, generated by a \texttt{Fortran} program.}
-\label{fig:random_matrix}
-\end{figure} 
-
-
-If you need to provide a diagram of your own creation, there are several options available. You can feel free to choose whichever method your experience has endowed you with, or else represents the best compromise between effort spent and professional appearance of the final product. For instance, you could hand-draw your diagram, scan or take a photo of it, upload the resulting image to the correct directory, crop/filter it and add to your document, as shown in the LHS of Figure (\ref{fig:handcomp}).\\
-
-Alternatively, you could use some available computer software to get the job done. Here we will give you an example made in Inkscape, because it is an open-source package which is available for most operating systems. Here you will make your diagram (there are plenty of tutorials and examples available online), adjust the document borders to your satisfaction, save a vector-type copy for later editing purposes (for instance, `\texttt{diagram.svg}', and then also save a pdf version (`\texttt{diagram.pdf}'). It is the second file-type which you can link to your \LaTeX document with the usual features. The comparison between a hand-drawn and computer-rendered image is fairly stark -- see the RHS of Figure (\ref{fig:handcomp}).\\
-
-\begin{figure}[h!]
-\begin{center}
-\includegraphics[width=0.50\linewidth]{figures/dipole_hand.png}\hspace{1cm}
-\includegraphics[width=0.40\linewidth]{figures/dipole_vector.pdf}
-\end{center}
-\caption{A sketch of some electric field lines around an ideal electric dipole.}
-\label{fig:handcomp}
+\section{Hydrogenic atoms}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1.0\linewidth]{Figures/Chapter1_Panel.png}
+    \caption{Caption}
+    \label{fig:placeholder}
 \end{figure}
+Hydrogenic atoms are atomic systems containing a single
+electron bound to a nucleus of charge \(+Ze\), where
+\(Z\) is the atomic number. The simplest example is
+hydrogen (\(Z=1\)), although the same description applies
+to one-electron ions such as \(\mathrm{He}^{+}\),
+\(\mathrm{Li}^{2+}\), and \(\mathrm{Mn}^{24+}\).
 
-If you wish to take the last example further, try exploring some of Inkscape's features. It allows you to plot functions, write mathematical expressions (although this option does not always work) and vectorise/edit a surprisingly large assortment of existing images. If you would like your final document to look seamlessly consistent, you can even make diagrams with text and equations of the same formatting. (This involves writing everything in a dummy \LaTeX document, exporting and vectorising it online, importing that vector document into Inkscape, playing around with character size compared to final drawing size in the document, and then exporting that diagram as a pdf to be placed back into \LaTeX ... possibly not a worthwhile pursuit for the purposes of this subject.)
+Unlike multi-electron atoms, hydrogenic systems contain
+no electron--electron interactions. Their nonrelativistic
+Schrödinger equation can therefore be solved analytically,
+providing exact wavefunctions and energy eigenvalues
+against which numerical methods can be tested. \textit{(Insert Bransden and Joachain reference upon revision)} ...
 
-\section{Computer code}\label{sec:code}
-\subsection{Code input/output}\label{subsec:codeinout}
+In atomic units, and assuming an infinitely massive
+point nucleus, the Hamiltonian is
 
-Talk about the language that you used, maybe referencing an integral in \cite{abramowitz1970} or a numerical algorithm in \cite{press1992} if you used \texttt{Fortran}.
+\begin{equation}
+    \hat{H}
+    = -\frac{1}{2}\nabla^2-\frac{Z}{r}
+    \label{eq:intro_hamiltonian}
+\end{equation}
 
-\subsection{Code written verbatim}\label{subsec:verbatim}
+where \(r\) is the electron--nucleus separation.
+The corresponding ground-state energy and normalised
+\(1s\) wavefunction are
 
-This can be done with the \texttt{listings} and \texttt{verbatim} packages. You should modify the preamble document so that these packages correctly interpret the programming language that you used.
+\begin{equation}
+    E_{1s}=-\frac{Z^2}{2},
+    \qquad
+    \psi_{1s}(r)
+    =\sqrt{\frac{Z^3}{\pi}}e^{-Zr}
+    \label{eq:intro_hydrogenic}
+\end{equation}
 
-\newpage
+The exponential dependence describes the spatial decay
+of the electron wavefunction away from the nucleus.
+As \(Z\) increases, the electron becomes more tightly
+bound and its characteristic spatial extent decreases.
 
-\begin{lstlisting}
-      FUNCTION PINEWT(N)
-      IMPLICIT DOUBLE PRECISION (A-H,O-Z)
-C**********************************************************************C
-C     PINEWT EVALUATES THE INFINITE SERIES REPRESENTATION              C
-C     FOR PI AS A TRUNCATED SUM.                                       C
-C**********************************************************************C
-C
-C     ENSURE N IS A LEGAL VALUE
-      IF(N.LT.0) THEN
-        WRITE(6,*) 'In PINEWT: illegal value for N.',N
-        RETURN
-      ELSEIF(N.EQ.0) THEN
-        PINEWT = 2.0D0
-      ENDIF
-C
-C     INITIALISE SOME COUNTERS
-      TWOPOW = 1.0D0
-      FACKNM = 1.0D0
-      FACKDM = 1.0D0
-      PINEWT = TWOPOW*FACKNM*FACKNM/FACKDM
-C
-C     LOOP OVER SERIES ORDER N TIMES, ADDING EACH TERM TO TOTAL
-      DO I=1,N
-        TWOPOW = 2.0D0*TWOPOW
-        FACKNM = DFLOAT(I)*FACKNM
-        FACKDM = DFLOAT(2*I+1)*DFLOAT(2*I)*FACKDM
-        PINEWT = PINEWT + TWOPOW*FACKNM*FACKNM/FACKDM
-      ENDDO
-C
-C     DOUBLE THE RESULT (SEE WIKIPEDIA FORMULA)
-      PINEWT = 2.0D0*PINEWT
-C
-      RETURN
-      END
-\end{lstlisting}
+Hydrogenic systems are consequently useful benchmarks
+for investigating the accuracy, convergence and numerical
+stability of approximate quantum-mechanical methods.
+
+
+\section{Gaussian basis sets}
+
+Although the hydrogenic Schrödinger equation has an
+analytical solution, most atomic and molecular systems
+cannot be solved exactly. Numerical electronic-structure
+methods therefore commonly approximate wavefunctions
+using finite expansions of simpler basis functions.
+
+One widely used approach employs Gaussian-type orbitals
+, which were introduced into electronic-structure
+calculations by Boys \cite{Boys1950}.
+
+A spherical Gaussian basis function has the form
+
+\begin{equation}
+    \phi_i(r)=A_i e^{-\lambda_i r^2}
+    \label{eq:intro_gaussian}
+\end{equation}
+
+where \(\lambda_i>0\) determines the spatial width
+and \(A_i\) is a normalisation constant.
+
+Small exponents produce broad functions extending
+farther from the nucleus, whereas large exponents
+produce narrow functions concentrated near the nucleus.
+
+The hydrogenic ground-state wavefunction can be
+approximated by a linear combination of \(N\)
+Gaussian functions,
+
+\begin{equation}
+    \psi_{\mathrm G}(r)
+    =\sum_{i=1}^{N}c_i\phi_i(r)
+    \label{eq:intro_expansion}
+\end{equation}
+
+where the coefficients \(c_i\) determine the
+contribution of each basis function.
+
+The coefficients are obtained by minimising the
+energy expectation value, leading to a generalised
+matrix eigenvalue problem. The resulting eigenvalues
+provide approximate energies, while the eigenvectors
+determine the corresponding wavefunctions.
+
+The principal computational advantage of Gaussian
+functions is that their products and many associated
+integrals can be evaluated analytically. This makes
+them particularly convenient for constructing the
+Hamiltonian and overlap matrices required in
+electronic-structure calculations \cite{Boys1950}.
+
+Gaussian basis sets have consequently become a
+standard component of quantum-chemical calculations,
+including more elaborate contracted and correlation-
+consistent basis sets \cite{Dunning1989,Raffenetti}.
+
+
+\section{Accuracy and limitations of Gaussian expansions}
+
+Despite their computational advantages, Gaussian
+functions do not have the same radial dependence
+as exact hydrogenic orbitals.
+
+The exact \(1s\) wavefunction decays as \(e^{-Zr}\),
+whereas an individual Gaussian decays as
+\(e^{-\lambda r^2}\). A finite combination of
+Gaussians can approximate the exponential function
+closely over a range of distances, but cannot
+reproduce its behaviour exactly everywhere.
+
+An important difference occurs at the nucleus.
+The exact hydrogenic wavefunction satisfies the
+electron--nucleus cusp condition,
+
+\begin{equation}
+    \left.
+    \frac{\mathrm d\psi_{1s}}{\mathrm dr}
+    \right|_{r=0}
+    =-Z\psi_{1s}(0)
+    \label{eq:intro_cusp}
+\end{equation}
+
+whereas the radial derivative of any finite
+combination of centred spherical Gaussians
+vanishes at \(r=0\).
+
+This limitation is connected to the Coulomb
+singularity and the behaviour of electronic
+wavefunctions near nuclei \cite{Kato}.
+The theoretical accuracy of Gaussian expansions
+has also been investigated by Kutzelnigg
+\cite{Kutzelnigg1994}.
+
+Increasing the number of basis functions generally
+allows a more flexible approximation, although
+the rate of improvement depends on the chosen
+Gaussian exponents.
+
+In particular, a basis containing functions
+with very similar widths may become nearly
+linearly dependent, leading to an ill-conditioned
+overlap matrix and potential numerical instability
+\cite{Lehtola2019}.
+
+The selection of Gaussian exponents is therefore
+as important as the number of basis functions.
+
+
+\section{Even-tempered Gaussian basis sets}
+Here the term \textit{even-tempered} refers to the constant
+ratio between successive Gaussian exponents, i.e.
+$\lambda_{i+1}/\lambda_i=\beta$, meaning that
+the exponents are equally spaced on a logarithmic scale.
+A systematic way of selecting Gaussian exponents
+is to use a geometric progression,
+
+\begin{equation}
+    \lambda_i=\alpha\beta^{i-1},
+    \qquad i=1,\ldots,N
+    \label{eq:intro_even_tempered}
+\end{equation}
+
+where \(\alpha>0\) sets the smallest exponent,
+\(\beta>1\) controls the spacing between successive
+exponents, and \(N\) is the number of functions.
+
+These are commonly referred to as even-tempered
+Gaussian basis sets. Their systematic construction
+makes it possible to investigate the influence of
+basis size and exponent distribution independently.
+
+Even-tempered bases and the optimisation of Gaussian
+exponents have been studied extensively by Feller
+and Ruedenberg \cite{FellerRuedenberg1979},
+Bardo and Ruedenberg \cite{BaR},
+and Wilson \cite{Wilson}.
+
+For the present investigation, the parameters
+\(N\), \(\alpha\), and \(\beta\) provide a
+convenient means of controlling the flexibility
+and numerical behaviour of the basis.
+
+
+\section{Motivation and scope}
+
+The hydrogenic ground state provides a useful
+test case because both its energy and wavefunction
+are known analytically. This allows numerical
+accuracy to be assessed without uncertainty
+arising from the reference solution.
+
+The present investigation considers not only
+the convergence of the ground-state energy,
+but also the accuracy of the reconstructed
+wavefunction and radial probability distribution.
+
+This distinction is important because a small
+energy error does not necessarily imply an
+equally small error in every observable or
+in the local behaviour of the wavefunction
+\cite{Kutzelnigg1994}.
+
+A further question concerns the transferability
+of a Gaussian basis between hydrogenic systems.
+Increasing nuclear charge contracts the exact
+wavefunction, suggesting that a basis optimised
+for hydrogen may be unsuitable for more
+strongly bound one-electron ions.
+
+The dependence of hydrogenic length scales on
+nuclear charge provides a natural way to
+investigate whether Gaussian exponents can
+be rescaled to preserve accuracy.
+
+
+\section{Aims and objectives}
+
+The aim of this report is to investigate the
+accuracy, convergence and transferability of
+finite Gaussian basis approximations to
+hydrogenic ground states.
+
+The principal objectives are:
+
+\begin{enumerate}
+    \item Construct a Gaussian basis approximation
+    to the hydrogen \(1s\) wavefunction and
+    compare it with the exact solution.
+
+    \item Investigate how the ground-state energy
+    error depends on the number of Gaussian
+    basis functions.
+
+    \item Examine the influence of the exponent
+    parameters \(\alpha\) and \(\beta\).
+
+    \item Assess numerical stability through
+    the condition number of the overlap matrix.
+
+    \item Compare energy accuracy with
+    wavefunction and radial-observable accuracy.
+
+    \item Investigate the transferability of
+    a hydrogen basis to higher Z hydrogenic ions,
+    up to and including \(\mathrm{Mn}^{24+}\).
+
+    \item Examine whether nuclear-charge
+    scaling of the Gaussian exponents
+    preserves the accuracy of the approximation.
+\end{enumerate}
+
+
+\section{Report structure}
+
+\begin{description}
+    \item[\textbf{Chapter 2:}] Introduces the theoretical framework,
+    including Gaussian normalisation, the variational method,
+    matrix elements and accuracy measures.
+
+    \item[\textbf{Chapter 3:}] Describes the numerical implementation
+    and the parameter investigations.
+
+    \item[\textbf{Chapter 4:}] Presents the results for hydrogen,
+    basis-set convergence, exponent selection,
+    numerical conditioning and nuclear-charge scaling.
+
+    \item[\textbf{Chapter 5:}] Summarises the main findings,
+    limitations and possible extensions.
+\end{description}
+
+

@@ -1,0 +1,179 @@
+
+\chapter{Results and Discussion}
+
+\section{Hydrogen ground-state approximation}
+
+\begin{table}[htbp]
+\centering
+\caption{Hydrogen ground-state benchmark
+using twelve Gaussian basis functions.}
+\label{tab:hydrogen_benchmark}
+\begin{tabular}{lcc}
+\toprule
+Quantity & Exact & Gaussian\\
+\midrule
+Energy (Ha)
+& -0.500000
+& -0.499589\\
+Relative energy error
+& 0
+& $8.2170\times10^{-4}$\\
+Mean radius (bohr)
+& 1.500000
+& 1.501244\\
+Condition number
+& --
+& $8.3295\times10^4$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+\subsection{Wavefunction comparison}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[
+    width=0.85\textwidth
+]{Figures/01_hydrogen_wavefunction.png}
+\caption{Comparison of the exact hydrogen
+ground-state wavefunction and its Gaussian
+basis approximation, with the wavefunction
+residual shown below.}
+\label{fig:hydrogen_wavefunction}
+\end{figure}
+
+
+\subsection{Radial probability distribution}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[
+    width=0.85\textwidth
+]{Figures/02_hydrogen_radial_probability.png}
+\caption{Exact and Gaussian radial probability
+distributions for hydrogen, including the
+corresponding mean electron radii.}
+\label{fig:hydrogen_probability}
+\end{figure}
+
+
+\section{Convergence with basis size}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[
+    width=0.85\textwidth
+]{Figures/03_convergence_and_conditioning.png}
+\caption{Relative ground-state energy error
+and overlap-matrix condition number versus
+the number of Gaussian basis functions,
+for three exponent spacings.}
+\label{fig:convergence}
+\end{figure}
+
+\section{Dependence on Gaussian exponents}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[
+    width=0.85\textwidth
+]{Figures/04_alpha_beta_heatmap.png}
+\caption{Logarithm of the relative
+ground-state energy error as a function
+of the Gaussian exponent parameters
+$\alpha$ and $\beta$, with the initial
+parameter choice indicated.}
+\label{fig:alpha_beta}
+\end{figure}
+
+\section{Energy and wavefunction accuracy}
+
+
+
+\section{Transferability across nuclear charge}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[
+    width=0.85\textwidth
+]{Figures/05_fixed_vs_scaled_charge.png}
+\caption{Relative ground-state energy error
+for hydrogenic ions with $1\leq Z\leq25$,
+comparing fixed hydrogen exponents with
+$Z^2$-scaled exponents.}
+\label{fig:charge_transfer}
+\end{figure}
+
+
+\section{Hydrogenic manganese}
+
+\begin{table}[htbp]
+\centering
+\caption{Ground-state energies for
+hydrogenic manganese ($Z=25$).}
+\label{tab:manganese}
+\begin{tabular}{lcc}
+\toprule
+Method & Energy (Ha) & Relative error\\
+\midrule
+Exact
+& -312.500000
+& 0\\
+Fixed hydrogen basis
+& -140.956593
+& 0.54894\\
+$Z^2$-scaled basis
+& -312.243220
+& $8.2170\times10^{-4}$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[
+    width=0.85\textwidth
+]{Figures/06_manganese_radial_comparison.png}
+\caption{Exact and approximate radial
+probability distributions for hydrogenic
+manganese, comparing fixed and
+$Z^2$-scaled Gaussian bases.}
+\label{fig:manganese}
+\end{figure}
+
+
+\section{Dimensionless scaling}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[
+    width=0.85\textwidth
+]{Figures/07_scaling_collapse.png}
+\caption{Scaled radial probability
+distributions for selected nuclear charges,
+plotted against the dimensionless coordinate
+$\rho=Zr$.}
+\label{fig:scaling_collapse}
+\end{figure}
+
+
+\section{Practical basis-set selection}
+
+\begin{table}[htbp]
+\centering
+\caption{Basis sizes required to reach
+selected relative energy-error targets.}
+\label{tab:minimum_basis}
+\begin{tabular}{ccccc}
+\toprule
+Target & $N$ & $\alpha$ & $\beta$ & $\kappa_2(S)$\\
+\midrule
+$10^{-3}$ & -- & -- & -- & --\\
+$10^{-4}$ & -- & -- & -- & --\\
+$10^{-5}$ & -- & -- & -- & --\\
+$10^{-6}$ & -- & -- & -- & --\\
+\bottomrule
+\end{tabular}
+\end{table}
+
