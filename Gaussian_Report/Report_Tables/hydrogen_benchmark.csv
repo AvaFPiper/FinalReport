@@ -1,0 +1,12 @@
+quantity,value,units
+N,12,count
+alpha,0.01,bohr^-2
+beta,1.9,dimensionless
+gaussian_energy,-0.49958915221383,Ha
+exact_energy,-0.5,Ha
+relative_energy_error,0.00082169557234235,dimensionless
+gaussian_mean_radius,1.5012449106284,bohr
+exact_mean_radius,1.5,bohr
+condition_number,83295.440019823,dimensionless
+gaussian_psi_at_zero,0.51621156552591,bohr^-3/2
+exact_psi_at_zero,0.56418958354776,bohr^-3/2

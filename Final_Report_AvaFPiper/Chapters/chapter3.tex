@@ -1,0 +1,119 @@
+% CHAPTER 3
+
+\chapter{Computational Methodology}
+\label{chap:methodology}
+
+The calculations examine how the accuracy of a Gaussian approximation depends on basis size, exponent selection and nuclear charge. The exact hydrogenic solution provides a reference against which energy and wavefunction errors can be measured, while independent numerical checks distinguish limitations of the basis from errors in the computation. The methods developed from Chapter~\ref{chap:theory} are also used to investigate near-linear dependence and the transferability of a hydrogen-optimised basis to more strongly bound one-electron ions.
+
+
+% 3.1 VARIATIONAL CALCULATION
+
+
+\section{Variational Calculation}
+
+The calculations were implemented in Python using NumPy for array operations, SciPy for numerical linear algebra and integration, and Matplotlib for plotting. Atomic units are used throughout. For specified values of $Z$, $N$, $\alpha$ and $\beta$, the even-tempered Gaussian exponents are generated using Eq.~\eqref{eq:exponent_sequence}.
+
+The overlap and Hamiltonian matrices are constructed from the analytical expressions in Eqs.~\eqref{eq:overlap_matrix}--\eqref{eq:hamiltonian_matrix}, derived in Appendix~\ref{app:gaussian-integrals}. Evaluating these matrix elements analytically avoids numerical integration errors and allows the calculation to be repeated efficiently for different basis parameters.
+
+The expansion coefficients are obtained by solving the generalised eigenvalue problem in Eq.~\eqref{eq:generalised_eigenproblem} using \texttt{scipy.linalg.eigh(H, S)}. The lowest eigenvalue gives the variational ground-state energy, while the corresponding eigenvector provides the Gaussian expansion coefficients. The coefficients are normalised using the overlap matrix, and their overall sign is chosen so that the reconstructed ground-state wavefunction is positive near the nucleus.
+
+The reference hydrogen calculation uses
+\begin{equation}
+    Z=1,\qquad N=12,\qquad
+    \alpha=0.01\ \mathrm{bohr}^{-2},
+    \qquad \beta=1.9.
+    \label{eq:reference_parameters}
+\end{equation}
+These parameters provide a reproducible starting point rather than an optimised basis. The resulting energy, wavefunction and radial probability distribution are compared with the exact expressions in Eqs.~\eqref{eq:exact_state} and \eqref{eq:radial_probability}.
+
+The mean radius is calculated directly from the Gaussian coefficients and analytical radial matrix elements,
+\begin{equation}
+    \langle r\rangle_{\mathrm G}
+    =\sum_{i,j}c_ic_j
+    \frac{2\pi A_iA_j}
+         {(\lambda_i+\lambda_j)^2}.
+\end{equation}
+The wavefunction error defined in Eq.~\eqref{eq:wavefunction_error} is evaluated separately using numerical radial integration. This provides a comparison of both the ground-state energy and the spatial accuracy of the reconstructed wavefunction.
+
+
+% 3.2 INVESTIGATING ACCURACY AND BASIS LIMITATIONS
+
+\section{Investigating Accuracy and Basis Limitations}
+
+The first calculations examine how energy accuracy changes as the number of Gaussian functions increases. For an even-tempered basis, increasing $N$ at fixed $\alpha$ and $\beta$ adds progressively narrower functions without extending the diffuse end of the basis. The rate of convergence therefore depends on the exponent distribution as well as the number of functions. The convergence calculations use $N=2,\ldots,30$, with $\alpha=0.01\ \mathrm{bohr}^{-2}$ and $\beta=1.6$, $1.9$ and $2.3$. Both the relative energy error and overlap condition number $\kappa(\mathbf S)$ are recorded. Comparing these quantities allows improvements in variational accuracy to be considered alongside increasing numerical sensitivity as the basis grows.
+
+Exponent selection is examined separately using a $61\times61$ parameter map at $N=12$. The map covers $10^{-3}\leq\alpha\leq10^{-1}\ \mathrm{bohr}^{-2}$ and $1.35\leq\beta\leq3.05$. This shows how the energy error depends jointly on the most diffuse Gaussian and the spacing between successive exponents, rather than on basis size alone.
+
+A coarser basis-selection search is then performed over $N=2,\ldots,20$, using 13 logarithmically spaced values of $\alpha$ between $10^{-3}$ and $10^{-1}\ \mathrm{bohr}^{-2}$, and 15 linearly spaced values of $\beta$ between 1.4 and 2.8. For each prescribed energy-error tolerance, the smallest tested basis size containing at least one acceptable parameter combination is recorded.
+The search proceeds in increasing $N$ and stops once all three energy-error tolerances have been met. In the final calculation, all parameter combinations for $N=2,\ldots,8$ were evaluated, giving 1365 attempted calculations, with no eigensolver failures.
+Only candidates satisfying $\kappa(\mathbf S)\leq10^{12}$ are accepted in the basis-selection search. This limits the inclusion of poorly conditioned solutions but does not guarantee numerical accuracy. The reported bases are therefore the smallest successful choices within the tested grid, rather than globally optimal solutions. The separate convergence calculations and dense parameter map are not subject to this cutoff, allowing successfully solved cases with larger condition numbers to be examined.
+
+Energy convergence is then compared with wavefunction convergence. As discussed in Section~\ref{chap:theory}, a small variational energy error does not necessarily imply that the approximate wavefunction is equally accurate. The $L^2$ error in Eq.~\eqref{eq:wavefunction_error} is therefore evaluated independently by numerically integrating the squared difference between the Gaussian and exact wavefunctions. The integration is divided into separate radial intervals to resolve both the region near the nucleus and the decaying tail. Integrating the squared difference directly also avoids subtracting nearly equal overlap terms, which can reduce numerical precision when the wavefunction approximation is highly accurate.
+
+The electron--nucleus cusp provides a separate test of accuracy near the nucleus. A finite Gaussian expansion cannot reproduce the exact derivative in Eq.~\eqref{eq:cusp_condition}. The local energy defined in Eq.~\eqref{eq:local_energy} is therefore evaluated as a function of radius to examine how this limitation affects the approximation near the singular Coulomb potential. The Gaussian and exact wavefunctions are also compared directly near the origin.
+
+Near-linear dependence is investigated using a separate Gaussian basis with closely spaced exponents, $\beta=1.3$ and $N=4,\ldots,40$. Canonical orthogonalisation is applied to the overlap matrix to identify and remove nearly dependent combinations of basis functions. Three relative overlap-eigenvalue thresholds, $\tau=10^{-6}$, $10^{-9}$ and $10^{-12}$, are tested to examine how the amount of pruning affects the calculated energy.
+
+The retained basis is re-orthogonalised to reduce floating-point errors associated with small overlap eigenvalues. The Hamiltonian is then transformed into the reduced basis, and its lowest eigenvalue is used to calculate the relative energy error. Numerical reliability checks are applied to the transformed basis and calculated eigenpairs before accepting the results.
+
+For each threshold and basis size, the number of retained basis directions and the relative energy error are recorded. These quantities allow the reduction in basis dimension to be considered alongside any loss of variational accuracy caused by removing basis directions.
+
+The final calculations examine whether a Gaussian basis chosen for hydrogen remains suitable at larger nuclear charges. For $Z=1,\ldots,25$, the original hydrogen exponents are compared with those scaled according to Eq.~\eqref{eq:scaled_exponents},
+\[
+    \lambda_i(Z)=Z^2\lambda_i(1).
+\]
+The exact hydrogenic orbital contracts on a length scale proportional to $1/Z$, so fixed hydrogen exponents are expected to become increasingly diffuse relative to the electron distribution. The $Z=25$ ion, $\mathrm{Mn}^{24+}$, provides a detailed example of this effect. The radial probability distributions are also compared in the scaled coordinate $\rho=Zr$, using $P_Z(\rho/Z)/Z$. This tests the radial scaling relation in Eq.~\eqref{eq:radial_scaling} and allows the spatial results to be compared with the energy calculations.
+
+% 3.3 NUMERICAL VERIFICATION AND STABILITY
+\newpage
+\section{Numerical Verification and Stability}
+
+Numerical verification was performed to distinguish errors in the computational implementation from limitations of the Gaussian approximation itself. Since an accurately solved eigenvalue problem does not necessarily imply that its underlying matrices are correct, the calculations were assessed through complementary consistency checks and independent numerical comparisons.
+
+The overlap and Hamiltonian matrices were checked for symmetry, while the diagonal overlap elements were verified to equal unity, consistent with the normalisation of the individual Gaussian functions. The resulting eigenpairs were also tested for wavefunction normalisation, agreement between the calculated eigenvalue and Rayleigh quotient, and satisfaction of the variational energy bound.
+
+To assess how accurately the computed eigenpairs satisfy the generalised eigenvalue equation, the relative residual was calculated as
+\begin{equation}
+    \eta =
+    \frac{
+        \|\mathbf H\mathbf c-E\mathbf S\mathbf c\|_2
+    }{
+        \|\mathbf c\|_2
+        \left(
+            \|\mathbf H\|_2
+            +|E|\|\mathbf S\|_2
+        \right)
+    }.
+    \label{eq:relative_residual}
+\end{equation}
+Normalising by the matrix and eigenvalue scales permits meaningful comparisons between calculations with different basis parameters and nuclear charges. However, a small residual only establishes consistency with the constructed matrices. To verify the matrix elements independently, selected overlap, kinetic-energy and Coulomb integrals were compared against direct numerical radial integration.
+
+The wavefunction $L^2$ error was independently recalculated using a fine radial grid to assess the reliability of the numerical integration. The expected hydrogenic energy scaling and invariance of the overlap condition number were also tested for consistently scaled exponents at $Z=1,2,5,10,25,100$. The $Z=100$ case served exclusively as an additional numerical scaling check and was not included in the physical transferability analysis.
+
+Additional checks were applied to the basis-pruning calculations, where small overlap eigenvalues can increase sensitivity to floating-point errors. Following re-orthogonalisation, the retained basis was checked for orthonormality, the reduced Hamiltonian for symmetry, and the resulting eigenpairs for residual accuracy and compliance with the variational bound. All tested basis sizes satisfied these checks for each of the three pruning thresholds.
+
+The numerical discrepancies obtained from the final calculations are summarised in Table~\ref{tab:numerical_validation}.
+
+\begin{table}[htbp]
+\centering
+\caption{Numerical verification results. The matrix-element discrepancy is the maximum relative difference across 12 independent comparisons. The energy-scaling discrepancy is the maximum absolute difference between $E(Z)/Z^2$ and $E(1)$.}
+\label{tab:numerical_validation}
+\begin{tabular}{lc}
+\hline
+Verification test & Measured discrepancy\\
+\hline
+Relative eigenpair residual (reference basis)
+    & $2.404\times10^{-16}$\\
+Matrix elements (12 comparisons)
+    & $6.565\times10^{-13}$\\
+$Z^2$ energy scaling ($Z=1,2,5,10,25,100$)
+    & $3.44\times10^{-15}$ Ha\\
+Independent $L^2$ integration ($N=30$)
+    & $2.127\times10^{-10}$\\
+\hline
+\end{tabular}
+\end{table}
+
+The $L^2$ discrepancy represents the relative difference between the two integration methods, while the other dimensionless entries are relative numerical discrepancies. All implemented verification checks passed, supporting the internal consistency of the calculations and the reliability of the reported numerical results.
+
+These checks do not, however, establish the physical accuracy of a finite Gaussian expansion. In particular, numerical convergence of the eigenvalue problem cannot eliminate the limitations associated with the electron--nucleus cusp or an incomplete basis. Likewise, the condition-number cutoff used during basis selection restricts numerical sensitivity without guaranteeing a particular level of accuracy. The distinction between computational reliability and the accuracy of the physical approximation is examined in Chapter~4.

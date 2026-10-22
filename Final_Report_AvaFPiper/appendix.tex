@@ -1,0 +1,192 @@
+
+% APPENDIX — ANALYTICAL GAUSSIAN MATRIX ELEMENTS
+
+
+\chapter{Derivation of Gaussian Matrix Elements}
+\label{app:gaussian-integrals}
+
+For the hydrogenic Hamiltonian in atomic units,
+\[
+\hat H=-\frac12\nabla^2-\frac{Z}{r},
+\]
+we use normalised spherical Gaussian functions,
+\[
+\phi_i(r)=A_i e^{-\lambda_i r^2},
+\qquad
+p_{ij}=\lambda_i+\lambda_j.
+\]
+The matrix elements can be calculated analytically.
+Since the functions are spherically symmetric, the
+volume element becomes $d^3r=4\pi r^2\,dr$ after
+integrating over the angles.
+
+\section{Gaussian Normalisation}
+
+Each Gaussian must satisfy
+\[
+\int|\phi_i|^2\,d^3r=1.
+\]
+Substituting the Gaussian function gives
+\begin{align*}
+1
+&=4\pi A_i^2
+  \int_0^\infty r^2e^{-2\lambda_i r^2}\,dr\\
+&=4\pi A_i^2
+  \frac{\sqrt{\pi}}{4(2\lambda_i)^{3/2}}\\
+&=A_i^2
+  \left(\frac{\pi}{2\lambda_i}\right)^{3/2},
+\end{align*}
+using
+\[
+\int_0^\infty r^2e^{-ar^2}\,dr
+=\frac{\sqrt{\pi}}{4a^{3/2}}.
+\]
+Solving for $A_i$ gives
+\begin{equation}
+\boxed{
+A_i=\left(\frac{2\lambda_i}{\pi}\right)^{3/4}.
+}
+\end{equation}
+
+\section{Overlap Matrix}
+
+The overlap between two Gaussian functions is
+\begin{align*}
+S_{ij}
+&=\int\phi_i(\mathbf r)\phi_j(\mathbf r)\,d^3r\\
+&=4\pi A_iA_j
+  \int_0^\infty r^2e^{-p_{ij}r^2}\,dr\\
+&=A_iA_j\frac{\pi^{3/2}}{p_{ij}^{3/2}}.
+\end{align*}
+Therefore,
+\begin{equation}
+\boxed{
+S_{ij}=A_iA_j
+\left(\frac{\pi}{p_{ij}}\right)^{3/2}.
+}
+\label{eq:appendix-overlap}
+\end{equation}
+The diagonal elements are $S_{ii}=1$ because each
+Gaussian is normalised. The off-diagonal elements
+are generally nonzero because the functions are
+not orthogonal.
+
+\section{Kinetic-Energy Matrix}
+
+The kinetic-energy matrix elements are
+\[
+T_{ij}
+=-\frac12\int\phi_i\nabla^2\phi_j\,d^3r.
+\]
+For a spherical Gaussian,
+\begin{align*}
+\frac{d\phi_j}{dr}
+&=-2\lambda_jr\phi_j,\\
+\nabla^2\phi_j
+&=\frac1{r^2}\frac{d}{dr}
+  \left(r^2\frac{d\phi_j}{dr}\right)\\
+&=(4\lambda_j^2r^2-6\lambda_j)\phi_j.
+\end{align*}
+Substituting this into the kinetic-energy integral,
+\begin{align*}
+T_{ij}
+&=3\lambda_jS_{ij}
+ -2\lambda_j^2
+  \int r^2\phi_i\phi_j\,d^3r.
+\end{align*}
+The remaining integral is
+\begin{align*}
+\int r^2\phi_i\phi_j\,d^3r
+&=4\pi A_iA_j
+  \int_0^\infty r^4e^{-p_{ij}r^2}\,dr\\
+&=4\pi A_iA_j
+  \frac{3\sqrt{\pi}}{8p_{ij}^{5/2}}\\
+&=\frac{3}{2p_{ij}}S_{ij}.
+\end{align*}
+Substituting this result,
+\begin{align*}
+T_{ij}
+&=3\lambda_jS_{ij}
+  -\frac{3\lambda_j^2}{p_{ij}}S_{ij}\\
+&=\frac{3\lambda_j(p_{ij}-\lambda_j)}
+        {p_{ij}}S_{ij}\\
+&=\frac{3\lambda_i\lambda_j}{p_{ij}}S_{ij}.
+\end{align*}
+Hence,
+\begin{equation}
+\boxed{
+T_{ij}
+=\frac{3\lambda_i\lambda_j}{p_{ij}}S_{ij}.
+}
+\label{eq:appendix-kinetic}
+\end{equation}
+This is symmetric in $i$ and $j$, as expected for
+the kinetic-energy operator.
+
+\section{Electron--Nucleus Potential Matrix}
+
+The Coulomb potential is $V(r)=-Z/r$, giving
+\begin{align*}
+V_{ij}
+&=-Z\int\frac{\phi_i\phi_j}{r}\,d^3r\\
+&=-4\pi ZA_iA_j
+  \int_0^\infty re^{-p_{ij}r^2}\,dr\\
+&=-4\pi ZA_iA_j\frac{1}{2p_{ij}},
+\end{align*}
+using
+\[
+\int_0^\infty re^{-ar^2}\,dr=\frac1{2a}.
+\]
+Therefore,
+\begin{equation}
+\boxed{
+V_{ij}=-\frac{2\pi ZA_iA_j}{p_{ij}}.
+}
+\label{eq:appendix-potential}
+\end{equation}
+
+
+\section{Variational Eigenvalue Problem}
+
+The Hamiltonian matrix is obtained by adding the
+kinetic and potential contributions:
+\begin{equation}
+    H_{ij}
+    =\frac{3\lambda_i\lambda_j}{p_{ij}}S_{ij}
+    -\frac{2\pi ZA_iA_j}{p_{ij}}.
+    \label{eq:appendix-hamiltonian}
+\end{equation}
+
+Using the Gaussian expansion
+$\psi_{\mathrm G}=\sum_{i=1}^{N}c_i\phi_i$,
+the energy can be written as
+\begin{equation*}
+    E[\mathbf c]
+    =\frac{\mathbf c^{\mathsf T}\mathbf H\mathbf c}
+           {\mathbf c^{\mathsf T}\mathbf S\mathbf c}.
+\end{equation*}
+
+To find the coefficients that minimise the energy,
+we use the normalisation condition
+$\mathbf c^{\mathsf T}\mathbf S\mathbf c=1$
+and introduce a Lagrange multiplier $E$:
+\begin{equation*}
+    \mathcal L(\mathbf c,E)
+    =\mathbf c^{\mathsf T}\mathbf H\mathbf c
+    -E(\mathbf c^{\mathsf T}\mathbf S\mathbf c-1).
+\end{equation*}
+
+Differentiating with respect to $\mathbf c$
+and setting the result equal to zero,
+\begin{align*}
+    \frac{\partial\mathcal L}{\partial\mathbf c}
+    &=2\mathbf H\mathbf c-2E\mathbf S\mathbf c=0,\\
+    \mathbf H\mathbf c&=E\mathbf S\mathbf c.
+\end{align*}
+
+The lowest generalised eigenvalue gives the
+approximate ground-state energy within the chosen
+Gaussian basis. Since the matrix elements are
+calculated analytically, numerical integration
+is not needed to construct $\mathbf H$ or
+$\mathbf S$.

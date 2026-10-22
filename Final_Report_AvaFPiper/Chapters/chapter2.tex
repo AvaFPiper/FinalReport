@@ -1,0 +1,476 @@
+% CHAPTER 2
+
+\chapter{Theory}
+\label{chap:theory}
+
+% 2.1 EXACT HYDROGENIC GROUND STATE
+
+The numerical investigation undertaken requires a theoretical framework against
+which the Gaussian approximation can be assessed. This chapter begins
+with the exact hydrogenic ground state, which provides a benchmark
+for evaluating the approximate solutions. The variational formulation
+and analytical Gaussian matrix elements are then developed, followed
+by the measures of accuracy, numerical conditioning and nuclear-charge
+scaling used throughout the subsequent analysis.
+
+\section{Exact Hydrogenic Ground State}
+
+In atomic units
+($\hbar=m_e=e=4\pi\varepsilon_0=1$),
+the Hamiltonian for an electron bound to a fixed
+point nucleus of charge $+Ze$ is
+\begin{equation}
+    \hat H=-\frac12\nabla^2-\frac{Z}{r},
+    \label{eq:hydrogen_hamiltonian}
+\end{equation}
+where the two terms represent the electron's kinetic
+energy and its attractive Coulomb interaction with
+the nucleus. The exact normalised ground-state
+wavefunction and corresponding energy are
+\cite{bransden_physics_2009}
+\begin{equation}
+    \psi_{1s}(r)
+    =\left(\frac{Z^3}{\pi}\right)^{1/2}e^{-Zr},
+    \qquad
+    E_{1s}=-\frac{Z^2}{2}.
+    \label{eq:exact_state}
+\end{equation}
+
+The probability density $|\psi(r)|^2$ gives the
+probability per unit volume of finding the electron
+at a particular position. For a spherically
+symmetric state, the radial probability density is
+\begin{equation}
+    P(r)=4\pi r^2|\psi(r)|^2,
+    \qquad
+    \int_0^\infty P(r)\,\mathrm dr=1.
+    \label{eq:radial_probability}
+\end{equation}
+The factor $4\pi r^2$ accounts for the volume of a
+spherical shell. Substituting the exact $1s$
+wavefunction gives
+\[
+    P_{1s}(r)=4Z^3r^2e^{-2Zr}.
+\]
+Although the wavefunction is largest at the nucleus,
+the radial probability reaches its maximum at
+$r=1/Z$. The mean radius is
+$\langle r\rangle=3/(2Z)$, reflecting the contribution
+from the full radial distribution rather than only
+its most probable radius.
+
+These exact results provide complementary benchmarks
+for the Gaussian approximation. The ground-state
+energy measures the quality of the variational result,
+while the wavefunction, radial probability and mean
+radius describe its spatial accuracy. Both are needed
+because an accurate energy does not necessarily
+imply an equally accurate wavefunction.
+
+
+
+% 2.2 GAUSSIAN BASIS AND VARIATIONAL METHOD
+\newpage
+\section{Gaussian Basis and Variational Method}
+
+The approximate ground-state wavefunction is
+represented by a linear combination of $N$
+spherical Gaussian functions centred on the
+nucleus \cite{quiney_art_2018},
+\begin{equation}
+    \psi_{\mathrm G}(r)
+    =\sum_{i=1}^{N}c_i\phi_i(r),
+    \qquad
+    \phi_i(r)=A_i e^{-\lambda_i r^2},
+    \qquad
+    A_i=\left(\frac{2\lambda_i}{\pi}\right)^{3/4}.
+    \label{eq:gaussian_expansion}
+\end{equation}
+The coefficients $c_i$ determine the contribution
+of each function, while $A_i$ normalises each
+Gaussian individually. The exponents follow an
+even-tempered sequence,
+\begin{equation}
+    \lambda_i=\alpha\beta^{i-1},
+    \qquad
+    \alpha>0,\quad\beta>1,\quad i=1,\ldots,N.
+    \label{eq:exponent_sequence}
+\end{equation}
+Here $\alpha$ sets the smallest exponent and
+$\beta$ determines the ratio between successive
+exponents
+\cite{quiney_art_2018,BaR,FellerRuedenberg1979,Wilson}.
+
+The characteristic width of each Gaussian is
+proportional to $1/\sqrt{\lambda_i}$. Small
+exponents describe more diffuse regions of the
+electron distribution, while large exponents
+produce narrower functions concentrated near
+the nucleus. Since the largest exponent is
+$\alpha\beta^{N-1}$, increasing $N$ at fixed
+$\alpha$ and $\beta$ adds progressively narrower
+functions without extending the diffuse end of
+the basis. Consequently, increasing the number
+of functions does not necessarily improve the
+description of every radial region equally.
+
+Gaussian functions are particularly useful
+because their products and many of the required
+integrals can be evaluated analytically.
+The Gaussian product theorem expresses the
+product of two Gaussians as another Gaussian,
+simplifying the construction of the matrices
+used in electronic-structure calculations
+\cite{quiney_art_2018}. Although the exact
+hydrogenic wavefunction decays as $e^{-Zr}$
+rather than $e^{-\lambda r^2}$, a suitable
+combination of Gaussians can approximate its
+spatial behaviour while retaining these
+computational advantages.
+
+The expansion coefficients are obtained by
+minimising the expectation value of the
+Hamiltonian. For a nonorthogonal basis,
+the energy is expressed through the
+Rayleigh quotient,
+\begin{equation}
+    E[\mathbf c]
+    =\frac{\mathbf c^{\mathsf T}\mathbf H\mathbf c}
+           {\mathbf c^{\mathsf T}\mathbf S\mathbf c},
+    \qquad
+    H_{ij}=\langle\phi_i|\hat H|\phi_j\rangle,
+    \quad
+    S_{ij}=\langle\phi_i|\phi_j\rangle.
+    \label{eq:rayleigh_quotient}
+\end{equation}
+The Hamiltonian matrix $\mathbf H$ contains
+the kinetic and potential energy contributions,
+while the overlap matrix $\mathbf S$ accounts
+for the nonorthogonality of the Gaussian
+basis functions.
+
+According to the variational principle, the
+expectation value of the Hamiltonian for any
+normalised trial wavefunction cannot be lower
+than the exact ground-state energy
+\cite{bransden_physics_2009}. The coefficients
+are therefore chosen to minimise the energy
+subject to
+$\mathbf c^{\mathsf T}\mathbf S\mathbf c=1$.
+Introducing the Lagrange multiplier $E$,
+identified with the stationary energy, gives
+\[
+    \mathcal L
+    =\mathbf c^{\mathsf T}\mathbf H\mathbf c
+    -E\left(
+       \mathbf c^{\mathsf T}\mathbf S\mathbf c-1
+      \right).
+\]
+Differentiating with respect to the coefficient
+vector,
+\[
+    \frac{\partial\mathcal L}{\partial\mathbf c}
+    =2\mathbf H\mathbf c
+     -2E\mathbf S\mathbf c=0,
+\]
+leads to the generalised eigenvalue equation
+\begin{equation}
+    \mathbf H\mathbf c=E\mathbf S\mathbf c.
+    \label{eq:generalised_eigenproblem}
+\end{equation}
+This formulation is also used in the
+computational quantum-chemistry approach
+described by Quiney and Flynn
+\cite{quiney_art_2018}. Further details
+are given in Appendix~\ref{app:gaussian-integrals}.
+
+The overlap matrix appears because the
+Gaussian functions are not mutually
+orthogonal, so $\mathbf S\neq\mathbf I$.
+For a linearly independent basis,
+$\mathbf S$ is positive definite and
+the generalised eigenvalues are real.
+The lowest eigenvalue gives the minimum
+energy available within the chosen
+Gaussian space. The variational bound
+therefore requires
+$E_{\mathrm G}\geq E_{1s}$ in exact
+arithmetic, providing a useful check
+on the numerical solution.
+
+The matrix elements can be evaluated
+analytically. Defining
+$p_{ij}=\lambda_i+\lambda_j$, the overlap,
+kinetic-energy and Coulomb potential
+matrices are
+\begin{align}
+    S_{ij}
+    &=A_iA_j
+      \left(\frac{\pi}{p_{ij}}\right)^{3/2},
+    \label{eq:overlap_matrix}\\
+    T_{ij}
+    &=\frac{3\lambda_i\lambda_j}{p_{ij}}S_{ij},
+    \label{eq:kinetic_matrix}\\
+    V_{ij}
+    &=-\frac{2\pi ZA_iA_j}{p_{ij}},
+    \label{eq:potential_matrix}\\
+    H_{ij}
+    &=T_{ij}+V_{ij}.
+    \label{eq:hamiltonian_matrix}
+\end{align}
+These expressions agree with the
+one-centre Gaussian matrix elements
+described by Quiney and Flynn
+\cite{quiney_art_2018}. Their derivations,
+including Gaussian normalisation, are
+provided in Appendix~\ref{app:gaussian-integrals}.
+
+Evaluating the matrix elements analytically
+avoids numerical integration errors in
+the construction of $\mathbf H$ and
+$\mathbf S$. It also makes repeated
+calculations with different basis sizes
+and exponent parameters more efficient.
+The resulting generalised eigenvalue
+problem is solved numerically using the
+methods described in Chapter~3.
+
+
+% 2.3 ACCURACY, CONDITIONING AND SCALING
+
+\section{Accuracy, Conditioning and Nuclear-Charge Scaling}
+
+The primary measure of accuracy is the
+relative ground-state energy error,
+\begin{equation}
+    \varepsilon_E
+    =\frac{|E_{\mathrm G}-E_{1s}|}{|E_{1s}|}.
+    \label{eq:energy_error}
+\end{equation}
+However, the variational energy alone
+does not establish how closely the
+approximate wavefunction reproduces
+the exact state. Spatial accuracy is
+therefore also assessed through the
+relative error in the mean radius,
+\begin{equation}
+    \varepsilon_r
+    =\frac{|\langle r\rangle_{\mathrm G}-3/(2Z)|}
+           {3/(2Z)},
+    \qquad
+    \langle r\rangle_{\mathrm G}
+    =\int_0^\infty rP_{\mathrm G}(r)\,\mathrm dr,
+    \label{eq:radius_error}
+\end{equation}
+and the three-dimensional wavefunction
+error, expressed as an $L^2$ norm,
+\begin{equation}
+    \varepsilon_\psi
+    =\left[
+        4\pi\int_0^\infty r^2
+        |\psi_{\mathrm G}(r)-\psi_{1s}(r)|^2
+        \,\mathrm dr
+      \right]^{1/2}.
+    \label{eq:wavefunction_error}
+\end{equation}
+Before calculating this difference,
+the overall sign of the numerical
+wavefunction is chosen to agree
+with the positive exact ground state.
+
+The variational principle explains
+why the energy may be substantially
+more accurate than the wavefunction.
+For a normalised Gaussian approximation,
+write
+\[
+    \psi_{\mathrm G}
+    =a\psi_{1s}+\delta\psi,
+    \qquad
+    \langle\psi_{1s}|\delta\psi\rangle=0.
+\]
+The exact ground state satisfies
+$\hat H\psi_{1s}=E_{1s}\psi_{1s}$.
+Using this relation and the
+normalisation of both states,
+the energy difference becomes
+\begin{equation}
+    E_{\mathrm G}-E_{1s}
+    =\langle\delta\psi|
+      (\hat H-E_{1s})|\delta\psi\rangle.
+    \label{eq:variational_error}
+\end{equation}
+The terms linear in the wavefunction
+difference cancel, leaving an
+energy-weighted quadratic expression.
+A small energy error therefore does
+not necessarily imply a comparably
+small wavefunction error. This
+distinction motivates the separate
+accuracy measures examined in
+Chapter~4.
+
+Another limitation comes from the
+behaviour of the wavefunction at
+the nucleus. The exact hydrogenic
+wavefunction satisfies the
+electron--nucleus cusp condition,
+whereas a finite sum of centred
+spherical Gaussians has zero radial
+derivative at the origin:
+\begin{equation}
+    \psi_{1s}'(0)=-Z\psi_{1s}(0),
+    \qquad
+    \psi_{\mathrm G}'(0)=0.
+    \label{eq:cusp_condition}
+\end{equation}
+The cusp follows from the singular
+Coulomb potential. For a spherically
+symmetric wavefunction,
+\[
+    \nabla^2\psi
+    =\psi''(r)+\frac{2}{r}\psi'(r).
+\]
+If $\psi'(0)\neq0$, the second term
+contains a contribution proportional
+to $1/r$. For the exact hydrogenic
+state, the cusp condition ensures
+that this singular kinetic-energy
+contribution cancels the Coulomb
+potential as $r\to0$. A finite
+Gaussian expansion cannot reproduce
+this cancellation exactly
+\cite{Kato,Kutzelnigg1994}.
+
+The effect can be examined through
+the local energy,
+\begin{equation}
+    E_{\mathrm{loc}}(r)
+    =\frac{\hat H\psi(r)}{\psi(r)}.
+    \label{eq:local_energy}
+\end{equation}
+For an exact eigenfunction, the
+local energy equals the corresponding
+eigenvalue wherever the wavefunction
+is nonzero. For a finite Gaussian
+expansion with nonzero amplitude
+at the nucleus, the kinetic-energy
+contribution remains finite as
+$r\to0$, while the Coulomb term
+diverges as $-Z/r$. The local
+energy consequently tends towards
+negative infinity near the nucleus,
+revealing a limitation that may
+be less apparent from the total
+variational energy.
+
+Increasing the number of Gaussians
+can improve the approximation,
+but it can also introduce numerical
+difficulties when basis functions
+become nearly linearly dependent.
+This is assessed using the spectral
+condition number of the overlap
+matrix,
+\begin{equation}
+    \kappa(\mathbf S)
+    =\frac{s_{\max}}{s_{\min}},
+    \label{eq:condition_number}
+\end{equation}
+where $s_{\max}$ and $s_{\min}$
+are its largest and smallest
+eigenvalues. For a positive-definite
+overlap matrix, both are positive.
+A large condition number indicates
+that some combinations of basis
+functions are nearly redundant,
+making the generalised eigenvalue
+problem more sensitive to numerical
+rounding errors \cite{Lehtola2019}.
+
+It is therefore important to
+distinguish between an incomplete
+basis and an ill-conditioned one.
+An incomplete basis may fail to
+represent the physical wavefunction
+accurately even when the matrix
+problem is solved correctly.
+Conversely, a larger basis may
+contain nearly dependent functions
+that make the numerical solution
+unreliable. In the parameter
+search, $\kappa(\mathbf S)\leq10^{12}$
+is used as a practical screening
+criterion rather than a universal
+guarantee of accuracy.
+
+Hydrogenic wavefunctions also have
+a simple dependence on nuclear
+charge. The exact ground state
+depends on the scaled coordinate
+$\rho=Zr$, so its characteristic
+radial length decreases as $1/Z$
+\cite{bransden_physics_2009}.
+To preserve the Gaussian widths
+relative to this length scale,
+the exponents must satisfy
+\begin{equation}
+    \lambda_i(Z)=Z^2\lambda_i(1).
+    \label{eq:scaled_exponents}
+\end{equation}
+For an even-tempered basis,
+this corresponds to replacing
+$\alpha$ with $Z^2\alpha$ while
+keeping $N$ and $\beta$ unchanged.
+
+The exponent scaling follows
+by writing each Gaussian in
+terms of $\rho$:
+\[
+    e^{-\lambda_i(Z)r^2}
+    =e^{-[\lambda_i(Z)/Z^2]\rho^2}.
+\]
+Choosing $\lambda_i(Z)=Z^2\lambda_i(1)$
+therefore preserves the Gaussian
+shape in the scaled coordinate.
+
+The corresponding energy scaling
+can be obtained directly from the
+Hamiltonian. Since
+$\nabla_r^2=Z^2\nabla_\rho^2$
+and $r=\rho/Z$,
+\[
+    \hat H(Z)
+    =Z^2\left(
+        -\frac12\nabla_\rho^2-\frac{1}{\rho}
+      \right).
+\]
+Thus, for a consistently scaled
+Gaussian basis, the variational
+energy satisfies
+\begin{equation}
+    E_{\mathrm G}(Z)=Z^2E_{\mathrm G}(1).
+    \label{eq:scaled_energy}
+\end{equation}
+Because the exact energy also
+scales as $Z^2$, the relative
+energy error is unchanged under
+this transformation.
+
+The normalised wavefunction scales
+as $\psi_Z(r)=Z^{3/2}\psi_1(Zr)$,
+giving the corresponding radial
+probability relation,
+\begin{equation}
+    P_Z(r)=ZP_1(Zr),
+    \qquad
+    \frac{P_Z(\rho/Z)}{Z}=P_1(\rho).
+    \label{eq:radial_scaling}
+\end{equation}
+The scaled radial distributions
+should therefore coincide when
+expressed in terms of $\rho=Zr$.
+Together, these relations provide
+specific theoretical predictions
+for the nuclear-charge calculations
+presented in Chapter~4.
