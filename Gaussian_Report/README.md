@@ -4,7 +4,7 @@
 
 **Author: Ava F. Piper**
 
-**Date: 22 October 2026 **
+**Date: 22 October 2026**
 
 ## Overview
 
